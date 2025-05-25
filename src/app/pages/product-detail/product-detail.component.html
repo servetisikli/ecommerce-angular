@@ -1,0 +1,51 @@
+<div class="product-detail-page">
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="loading-spinner">
+    <div class="spinner"></div>
+    <p>Ürün yükleniyor...</p>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <!-- Product Detail -->
+  <div *ngIf="!loading && !error && product" class="product-detail">
+    <div class="product-image">
+      <img [src]="product.imageUrl" [alt]="product.name">
+    </div>
+
+    <div class="product-info">
+      <h1 class="product-name">{{ product.name }}</h1>
+      <p class="product-price">{{ product.price | currency:'TRY':'symbol':'1.2-2' }}</p>
+
+      <div class="product-description">
+        <h3>Ürün Açıklaması</h3>
+        <p>{{ product.description }}</p>
+      </div>
+
+      <div class="stock-info" [ngClass]="{'in-stock': product.inStock, 'out-of-stock': !product.inStock}">
+        {{ product.inStock ? 'Stokta mevcut' : 'Stokta yok' }}
+      </div>
+
+      <div *ngIf="product.inStock" class="quantity-selector">
+        <button (click)="decreaseQuantity()" [disabled]="quantity <= 1">-</button>
+        <span>{{ quantity }}</span>
+        <button (click)="increaseQuantity()">+</button>
+      </div>
+
+      <div class="action-buttons">
+        <button
+          class="add-to-cart-btn"
+          [disabled]="!product.inStock"
+          (click)="addToCart()">
+          Sepete Ekle
+        </button>
+        <button class="back-btn" [routerLink]="['/products']">
+          Ürünlere Geri Dön
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,53 @@
+<!-- Hero Component -->
+<app-hero></app-hero>
+
+<section class="hero-section mb-10">
+  <div class="hero-content">
+    <h1 class="text-4xl font-bold mb-4">Alışverişin En İyi Adresi</h1>
+    <p class="text-lg mb-6">En kaliteli ürünler, en uygun fiyatlarla</p>
+    <a
+      routerLink="/products"
+      class="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition-colors"
+    >
+      Hemen Alışverişe Başla
+    </a>
+  </div>
+</section>
+
+<section class="featured-products mb-8">
+  <h2 class="text-2xl font-bold mb-6">Öne Çıkan Ürünler</h2>
+
+  <!-- Loading Durumu -->
+  <div *ngIf="loading" class="loading-spinner">
+    <div class="spinner"></div>
+    <p>Ürünler yükleniyor...</p>
+  </div>
+
+  <!-- Hata Mesajı -->
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <!-- Ürünler Listesi -->
+  <div
+    *ngIf="!loading && !error"
+    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+  >
+    <app-product-card
+      *ngFor="let product of featuredProducts"
+      [product]="product"
+      (addToCart)="addToCart(product)"
+    >
+    </app-product-card>
+  </div>
+
+  <!-- Tüm Ürünlere Git -->
+  <div class="text-center mt-8">
+    <a
+      routerLink="/products"
+      class="inline-block border border-blue-600 text-blue-600 px-5 py-2 rounded-md hover:bg-blue-600 hover:text-white transition-colors"
+    >
+      Tüm Ürünleri Görüntüle
+    </a>
+  </div>
+</section>

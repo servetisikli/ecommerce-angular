@@ -1,0 +1,28 @@
+<div class="products-page">
+  <h1 class="page-title">Ürünlerimiz</h1>
+
+  <!-- Loading Durumu -->
+  <div *ngIf="loading" class="loading-spinner">
+    <div class="spinner"></div>
+    <p>Ürünler yükleniyor...</p>
+  </div>
+
+  <!-- Hata Mesajı -->
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <!-- Ürünler Listesi -->
+  <div *ngIf="!loading && !error" class="products-grid">
+    <app-product-card
+      *ngFor="let product of products"
+      [product]="product"
+      (addToCart)="addToCart(product)">
+    </app-product-card>
+  </div>
+
+  <!-- Ürün Bulunamadı -->
+  <div *ngIf="!loading && !error && products.length === 0" class="empty-state">
+    <p>Ürün bulunamadı.</p>
+  </div>
+</div>
