@@ -1,1 +1,167 @@
-<p>cart works!</p>
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-6">Your Shopping Cart</h1>
+
+  <!-- Empty Cart Message -->
+  <div
+    *ngIf="cartItems.length === 0"
+    class="bg-gray-100 p-8 rounded-lg text-center"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-16 w-16 mx-auto mb-4 text-gray-400"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+      />
+    </svg>
+    <p class="text-xl font-medium mb-2">Your cart is empty</p>
+    <p class="text-gray-600 mb-4">
+      Looks like you haven't added any products to your cart yet.
+    </p>
+    <a
+      routerLink="/products"
+      class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+    >
+      Browse Products
+    </a>
+  </div>
+
+  <!-- Cart Items -->
+  <div *ngIf="cartItems.length > 0" class="space-y-6">
+    <!-- Cart Header -->
+    <div
+      class="grid grid-cols-12 gap-4 pb-2 border-b text-sm font-semibold text-gray-600"
+    >
+      <div class="col-span-6 md:col-span-6">Product</div>
+      <div class="col-span-2 md:col-span-2 text-center">Price</div>
+      <div class="col-span-2 md:col-span-2 text-center">Quantity</div>
+      <div class="col-span-2 md:col-span-2 text-center">Total</div>
+    </div>
+
+    <!-- Cart Items List -->
+    <div class="space-y-4">
+      <div
+        *ngFor="let item of cartItems"
+        class="grid grid-cols-12 gap-4 items-center py-4 border-b"
+      >
+        <!-- Product -->
+        <div class="col-span-6 md:col-span-6 flex items-center">
+          <div class="w-16 h-16 mr-4 bg-gray-100 rounded overflow-hidden">
+            <img
+              [src]="item.product.imageUrl || 'assets/placeholder.jpg'"
+              alt="Product image"
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <div>
+            <h3 class="font-medium">{{ item.product.name }}</h3>
+            <p class="text-sm text-gray-500">{{ item.product.category }}</p>
+          </div>
+        </div>
+
+        <!-- Price -->
+        <div class="col-span-2 md:col-span-2 text-center">
+          ${{ item.product.price.toFixed(2) }}
+        </div>
+
+        <!-- Quantity -->
+        <div class="col-span-2 md:col-span-2 flex items-center justify-center">
+          <button
+            (click)="decreaseQuantity(item)"
+            class="text-gray-500 hover:text-gray-700"
+          >
+            -
+          </button>
+          <span class="mx-2 w-8 text-center">{{ item.quantity }}</span>
+          <button
+            (click)="increaseQuantity(item)"
+            class="text-gray-500 hover:text-gray-700"
+          >
+            +
+          </button>
+        </div>
+
+        <!-- Total -->
+        <div class="col-span-2 md:col-span-2 flex items-center justify-between">
+          <span class="text-center w-full">
+            {{
+              item.product && item.product.price !== undefined
+                ? "$" + (item.product.price * item.quantity).toFixed(2)
+                : "$0.00"
+            }}
+          </span>
+          <button
+            (click)="removeFromCart(item.product.id)"
+            class="text-red-500 hover:text-red-700"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cart Summary -->
+    <div class="mt-8 flex flex-col md:flex-row md:justify-between">
+      <div class="md:w-1/3">
+        <button
+          (click)="clearCart()"
+          class="text-red-600 hover:text-red-800 flex items-center"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 mr-1"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          Clear Cart
+        </button>
+      </div>
+
+      <div class="md:w-1/3 mt-6 md:mt-0">
+        <div class="bg-gray-100 p-4 rounded">
+          <div class="flex justify-between mb-2">
+            <span>Subtotal:</span>
+            <span>${{ calculateSubtotal().toFixed(2) }}</span>
+          </div>
+          <div class="flex justify-between mb-2">
+            <span>Shipping:</span>
+            <span>Free</span>
+          </div>
+          <div class="flex justify-between font-bold text-lg pt-2 border-t">
+            <span>Total:</span>
+            <span>${{ calculateSubtotal().toFixed(2) }}</span>
+          </div>
+          <button
+            routerLink="/checkout"
+            class="mt-4 bg-green-600 text-white w-full py-2 rounded hover:bg-green-700 transition-colors"
+          >
+            Proceed to Checkout
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
