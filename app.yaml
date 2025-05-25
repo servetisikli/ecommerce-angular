@@ -2,8 +2,8 @@ name: ecommerce-angular-app
 services:
   - name: angular-static-site
     github:
-      repo: username/repo-name       # GitHub repo adresin
-      branch: main                   # Deploy edilecek branch
+      repo: https://github.com/servetisikli/ecommerce-angular
+      branch: main
     static_sites:
       - name: angular-site
         build_command: npm run build
