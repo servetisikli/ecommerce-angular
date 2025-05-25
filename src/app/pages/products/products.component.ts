@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ProductCardComponent } from '../../components/product-card/product-card.component';
 import { ProductService } from '../../services/product.service';
@@ -11,7 +11,7 @@ import { Product } from '../../models/product.model';
   selector: 'app-products',
   imports: [CommonModule, RouterModule, FormsModule, ProductCardComponent],
   templateUrl: './products.component.html',
-  styleUrls: ['./products.component.css']
+  styleUrls: ['./products.component.css'],
 })
 export class ProductsComponent implements OnInit {
   products: Product[] = [];
@@ -29,11 +29,25 @@ export class ProductsComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
-    private cartService: CartService
+    private cartService: CartService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.loadProducts();
+    // Get query params from URL
+    this.route.queryParams.subscribe((params) => {
+      // Handle search query from navbar
+      if (params['search']) {
+        this.searchQuery = params['search'];
+      }
+
+      // Handle category filter
+      if (params['category']) {
+        this.selectedCategory = params['category'];
+      }
+
+      this.loadProducts();
+    });
   }
 
   loadProducts(): void {
@@ -41,20 +55,23 @@ export class ProductsComponent implements OnInit {
     this.productService.getProducts().subscribe({
       next: (data) => {
         this.products = data;
-        this.filteredProducts = [...this.products];
         this.extractCategories();
+        // Apply filters from query params
+        this.applyFilters();
         this.loading = false;
       },
       error: (err) => {
         this.error = 'Failed to load products. Please try again later.';
         this.loading = false;
         console.error('Product loading error:', err);
-      }
+      },
     });
   }
 
   extractCategories(): void {
-    const uniqueCategories = new Set(this.products.map(product => product.category));
+    const uniqueCategories = new Set(
+      this.products.map((product) => product.category)
+    );
     this.categories = Array.from(uniqueCategories);
   }
 
@@ -71,19 +88,22 @@ export class ProductsComponent implements OnInit {
     // Apply search filter
     if (this.searchQuery) {
       const query = this.searchQuery.toLowerCase();
-      result = result.filter(product =>
-        product.name.toLowerCase().includes(query) ||
-        product.description.toLowerCase().includes(query)
+      result = result.filter(
+        (product) =>
+          product.name.toLowerCase().includes(query) ||
+          product.description.toLowerCase().includes(query)
       );
     }
 
     // Apply category filter
     if (this.selectedCategory) {
-      result = result.filter(product => product.category === this.selectedCategory);
+      result = result.filter(
+        (product) => product.category === this.selectedCategory
+      );
     }
 
     // Apply sorting
-    switch(this.sortOption) {
+    switch (this.sortOption) {
       case 'price-low':
         result.sort((a, b) => a.price - b.price);
         break;
@@ -129,6 +149,10 @@ export class ProductsComponent implements OnInit {
   }
 
   get hasFiltersApplied(): boolean {
-    return !!(this.searchQuery || this.selectedCategory || this.sortOption !== 'default');
+    return !!(
+      this.searchQuery ||
+      this.selectedCategory ||
+      this.sortOption !== 'default'
+    );
   }
 }

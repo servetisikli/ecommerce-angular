@@ -1,11 +1,12 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-navbar',
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
 })
@@ -14,8 +15,9 @@ export class NavbarComponent implements OnInit {
   isMobileMenuOpen = false;
   scrolled = false;
   cartItemCount = 0;
+  searchQuery = '';
 
-  constructor(private cartService: CartService) {}
+  constructor(private cartService: CartService, private router: Router) {}
 
   ngOnInit(): void {
     // Subscribe to cart changes to update badge count
@@ -57,6 +59,23 @@ export class NavbarComponent implements OnInit {
     // Check if click is outside user menu button and menu
     if (!target.closest('.user-menu') && this.isUserMenuOpen) {
       this.isUserMenuOpen = false;
+    }
+  }
+
+  // Handle search submission
+  onSearch(event: Event): void {
+    event.preventDefault();
+    if (this.searchQuery.trim()) {
+      // Navigate to products page with search query
+      this.router.navigate(['/products'], {
+        queryParams: {
+          search: this.searchQuery.trim(),
+        },
+      });
+      // Clear the search input after searching
+      this.searchQuery = '';
+      // Close mobile menu if open
+      this.isMobileMenuOpen = false;
     }
   }
 }
