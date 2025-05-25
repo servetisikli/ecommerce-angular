@@ -1,28 +1,121 @@
-<div class="products-page">
-  <h1 class="page-title">Ürünlerimiz</h1>
-
-  <!-- Loading Durumu -->
-  <div *ngIf="loading" class="loading-spinner">
-    <div class="spinner"></div>
-    <p>Ürünler yükleniyor...</p>
+<div class="container mx-auto px-4 py-8">
+  <!-- Page Header -->
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-800">All Products</h1>
+    <p class="text-gray-600 mt-2">Explore our range of premium tech products</p>
   </div>
 
-  <!-- Hata Mesajı -->
-  <div *ngIf="error" class="error-message">
-    {{ error }}
+  <!-- Filter Controls -->
+  <div class="bg-white rounded-lg shadow-sm p-4 mb-6">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <!-- Search Bar -->
+      <div class="relative md:w-64">
+        <input
+          type="text"
+          [(ngModel)]="searchQuery"
+          (input)="onSearchChange()"
+          placeholder="Search products..."
+          class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+        >
+        <button *ngIf="searchQuery" (click)="searchQuery=''; onSearchChange()" class="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-4">
+        <!-- Category Filter -->
+        <div class="w-full sm:w-48">
+          <select
+            [(ngModel)]="selectedCategory"
+            (change)="onCategoryChange()"
+            class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+          >
+            <option value="">All Categories</option>
+            <option *ngFor="let category of categories" [value]="category">
+              {{category | titlecase}}
+            </option>
+          </select>
+        </div>
+
+        <!-- Sort Options -->
+        <div class="w-full sm:w-48">
+          <select
+            [(ngModel)]="sortOption"
+            (change)="onSortChange()"
+            class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+          >
+            <option value="default">Default Sorting</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+            <option value="name-asc">Name: A to Z</option>
+            <option value="name-desc">Name: Z to A</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Filters Display -->
+    <div *ngIf="hasFiltersApplied" class="mt-4 flex items-center">
+      <span class="text-sm text-gray-500">Active filters:</span>
+      <div class="ml-2 flex flex-wrap gap-2">
+        <span *ngIf="searchQuery" class="text-xs bg-indigo-100 text-indigo-800 px-2 py-1 rounded-full">
+          Search: {{searchQuery}}
+        </span>
+        <span *ngIf="selectedCategory" class="text-xs bg-indigo-100 text-indigo-800 px-2 py-1 rounded-full">
+          Category: {{selectedCategory | titlecase}}
+        </span>
+        <span *ngIf="sortOption !== 'default'" class="text-xs bg-indigo-100 text-indigo-800 px-2 py-1 rounded-full">
+          Sorted by: {{sortOption === 'price-low' ? 'Price ↑' :
+                      sortOption === 'price-high' ? 'Price ↓' :
+                      sortOption === 'name-asc' ? 'Name A-Z' : 'Name Z-A'}}
+        </span>
+      </div>
+      <button
+        (click)="resetFilters()"
+        class="ml-auto text-xs text-indigo-600 hover:text-indigo-800"
+      >
+        Clear all filters
+      </button>
+    </div>
   </div>
 
-  <!-- Ürünler Listesi -->
-  <div *ngIf="!loading && !error" class="products-grid">
+  <!-- Results Count -->
+  <div class="mb-4 text-sm text-gray-500">
+    Showing {{productCount}} products
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="flex justify-center items-center py-12">
+    <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-600"></div>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+    <p>{{ error }}</p>
+    <button (click)="loadProducts()" class="mt-2 text-sm text-red-700 underline">Try Again</button>
+  </div>
+
+  <!-- Products Grid -->
+  <div *ngIf="!loading && !error" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
     <app-product-card
-      *ngFor="let product of products"
+      *ngFor="let product of filteredProducts"
       [product]="product"
-      (addToCart)="addToCart(product)">
+      (addToCart)="addToCart(product)"
+    >
     </app-product-card>
   </div>
 
-  <!-- Ürün Bulunamadı -->
-  <div *ngIf="!loading && !error && products.length === 0" class="empty-state">
-    <p>Ürün bulunamadı.</p>
+  <!-- Empty State -->
+  <div *ngIf="!loading && !error && filteredProducts.length === 0" class="text-center py-12">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+    <h3 class="mt-4 text-lg font-medium text-gray-900">No products found</h3>
+    <p class="mt-1 text-gray-500">Try adjusting your search or filter to find what you're looking for.</p>
+    <button (click)="resetFilters()" class="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors">
+      Clear Filters
+    </button>
   </div>
 </div>
