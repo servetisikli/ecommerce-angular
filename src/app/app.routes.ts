@@ -32,5 +32,17 @@ export const routes: Routes = [
         (c) => c.CheckoutComponent
       ),
   },
+  {
+    path: 'about',
+    loadComponent: () =>
+      import('./pages/about/about.component').then((c) => c.AboutComponent),
+  },
+  {
+    path: 'contact',
+    loadComponent: () =>
+      import('./pages/contact/contact.component').then(
+        (c) => c.ContactComponent
+      ),
+  },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
