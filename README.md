@@ -1,59 +1,165 @@
-# EcommerceAngular
+# Ecommerce Angular
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.9.
+## 📋 Project Overview
 
-## Development server
+This project is a modern, scalable, and user-friendly e-commerce platform frontend built with Angular. Users can browse products, add them to their cart, complete payments, and track their order history. The admin panel allows product, category, and order management.
 
-To start a local development server, run:
+**Demo Website:** [https://ecommerce-angular-5ync.vercel.app/](https://ecommerce-angular-5ync.vercel.app/)
 
-```bash
-ng serve
+## 🚀 Features
+
+- **User Authentication**
+  - Registration & Login/Logout
+  - Password reset and profile management
+
+- **Product Management**
+  - Product listing by category
+  - Filtering and searching
+  - Product detail pages
+
+- **Cart and Orders**
+  - Cart management
+  - Online payment integration
+  - Order history
+
+- **Admin Panel**
+  - Add/Edit/Delete products
+  - Manage orders and users
+
+## 🛠️ Technologies Used
+
+- **Angular**: Modern web application framework
+- **RxJS**: Reactive programming
+- **TailwindCSS**: Utility-first CSS framework
+- **Zone.js**: Execution contexts for JavaScript
+- **TypeScript**: Typed superset of JavaScript
+
+## 📦 Dependencies
+
+All dependencies are listed in the `package.json` file. Main dependencies:
+
+```json
+{
+  "dependencies": {
+    "@angular/common": "^19.2.0",
+    "@angular/compiler": "^19.2.0",
+    "@angular/core": "^19.2.0",
+    "@angular/forms": "^19.2.0",
+    "@angular/platform-browser": "^19.2.0",
+    "@angular/platform-browser-dynamic": "^19.2.0",
+    "@angular/router": "^19.2.0",
+    "@tailwindcss/postcss": "^4.1.7",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.15.0"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^19.2.9",
+    "@angular/cli": "^19.2.9",
+    "@angular/compiler-cli": "^19.2.0",
+    "@types/jasmine": "~5.1.0",
+    "autoprefixer": "^10.4.21",
+    "jasmine-core": "~5.6.0",
+    "karma": "~6.4.0",
+    "karma-chrome-launcher": "~3.2.0",
+    "karma-coverage": "~2.2.0",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.1.0",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^4.1.7",
+    "typescript": "~5.7.2"
+  }
+}
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 🗂️ Project Structure
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+```
+ecommerce-angular/
+├── src/
+│   ├── app/
+│   │   ├── components/     # UI components
+│   │   ├── pages/          # Page components
+│   │   ├── services/       # API services
+│   │   ├── models/         # TypeScript models
+│   │   ├── guards/         # Route guards
+│   │   ├── interceptors/   # HTTP interceptors
+│   │   └── store/          # State management (NgRx or similar)
+│   ├── assets/             # Images, icons, etc.
+│   └── environments/       # Environment variables
+├── angular.json            # Angular configuration
+├── package.json            # Project dependencies
+├── README.md               # Project documentation
+└── tsconfig.json           # TypeScript configuration
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## 🔧 Setup and Installation
 
-```bash
-ng generate --help
-```
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/servetisikli/ecommerce-angular.git
+   cd ecommerce-angular
+   ```
 
-## Building
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-To build the project run:
+3. Configure environment variables:
+   Edit `src/environments/environment.ts` and `environment.prod.ts` as needed.
+   ```ts
+   export const environment = {
+     production: false,
+     apiUrl: 'https://your-api-url.com',
+     stripePublicKey: 'your_stripe_public_key'
+   };
+   ```
 
-```bash
-ng build
-```
+4. Start the development server:
+   ```bash
+   npm start
+   ```
+   Visit [http://localhost:4200](http://localhost:4200) in your browser.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+5. For production build:
+   ```bash
+   npm run build
+   ```
 
-## Running unit tests
+## 🔐 Authentication Flow
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+1. User registers and email verification is performed.
+2. A JWT token is provided upon login.
+3. Authenticated routes require the token.
+4. Users can view their profile and order history.
 
-```bash
-ng test
-```
+## 📱 Application Routes
 
-## Running end-to-end tests
+### User
+- `/` - Homepage
+- `/login` - Login
+- `/register` - Register
+- `/product/:id` - Product details
+- `/cart` - Cart
+- `/checkout` - Checkout
 
-For end-to-end (e2e) testing, run:
+### Admin
+- `/admin` - Admin dashboard
+- `/admin/products` - Product management
+- `/admin/orders` - Order management
+- `/admin/users` - User management
 
-```bash
-ng e2e
-```
+## 👨‍💻 Author
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+- **Servet Isikli** - [GitHub Profile](https://github.com/servetisikli)
 
-## Additional Resources
+## 📅 Last Updated
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- Date: 2025-06-10
+- By: servetisikli
+
+## 🔗 Links
+
+- [Demo Website](https://ecommerce-angular-5ync.vercel.app/)
+- [Repository](https://github.com/servetisikli/ecommerce-angular)
