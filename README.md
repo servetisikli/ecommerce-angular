@@ -2,20 +2,16 @@
 
 ## 📋 Project Overview
 
-This project is a modern, scalable, and user-friendly e-commerce platform frontend built with Angular. Users can browse products, add them to their cart, complete payments, and track their order history.
+This project is a modern, scalable, and user-friendly e-commerce frontend built with Angular. Users can browse products, view product details, and explore a modern responsive UI.
 
 **Demo Website:** [https://ecommerce-angular-5ync.vercel.app/](https://ecommerce-angular-5ync.vercel.app/)
 
 ## 🚀 Features
 
-- **User Authentication**
-  - Registration & Login/Logout
-  - Password reset and profile management
-
-- **Product Management**
-  - Product listing by category
-  - Filtering and searching
-  - Product detail pages
+- Browse products by category
+- Product detail pages
+- Filtering and searching
+- Responsive design
 
 ## 🛠️ Technologies Used
 
@@ -81,8 +77,7 @@ All dependencies are listed in the `package.json` file. Main dependencies:
    ```ts
    export const environment = {
      production: false,
-     apiUrl: 'https://your-api-url.com',
-     stripePublicKey: 'your_stripe_public_key'
+     apiUrl: 'https://your-api-url.com'
    };
    ```
 
@@ -97,18 +92,9 @@ All dependencies are listed in the `package.json` file. Main dependencies:
    npm run build
    ```
 
-## 🔐 Authentication Flow
-
-1. User registers and email verification is performed.
-2. A JWT token is provided upon login.
-3. Authenticated routes require the token.
-4. Users can view their profile and order history.
-
 ## 📱 Application Routes
 
 - `/` - Homepage
-- `/login` - Login
-- `/register` - Register
 - `/product/:id` - Product details
 
 ## 👨‍💻 Author
