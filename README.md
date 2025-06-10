@@ -2,7 +2,7 @@
 
 ## 📋 Project Overview
 
-This project is a modern, scalable, and user-friendly e-commerce platform frontend built with Angular. Users can browse products, add them to their cart, complete payments, and track their order history. The admin panel allows product, category, and order management.
+This project is a modern, scalable, and user-friendly e-commerce platform frontend built with Angular. Users can browse products, add them to their cart, complete payments, and track their order history.
 
 **Demo Website:** [https://ecommerce-angular-5ync.vercel.app/](https://ecommerce-angular-5ync.vercel.app/)
 
@@ -16,15 +16,6 @@ This project is a modern, scalable, and user-friendly e-commerce platform fronte
   - Product listing by category
   - Filtering and searching
   - Product detail pages
-
-- **Cart and Orders**
-  - Cart management
-  - Online payment integration
-  - Order history
-
-- **Admin Panel**
-  - Add/Edit/Delete products
-  - Manage orders and users
 
 ## 🛠️ Technologies Used
 
@@ -72,27 +63,6 @@ All dependencies are listed in the `package.json` file. Main dependencies:
 }
 ```
 
-## 🗂️ Project Structure
-
-```
-ecommerce-angular/
-├── src/
-│   ├── app/
-│   │   ├── components/     # UI components
-│   │   ├── pages/          # Page components
-│   │   ├── services/       # API services
-│   │   ├── models/         # TypeScript models
-│   │   ├── guards/         # Route guards
-│   │   ├── interceptors/   # HTTP interceptors
-│   │   └── store/          # State management (NgRx or similar)
-│   ├── assets/             # Images, icons, etc.
-│   └── environments/       # Environment variables
-├── angular.json            # Angular configuration
-├── package.json            # Project dependencies
-├── README.md               # Project documentation
-└── tsconfig.json           # TypeScript configuration
-```
-
 ## 🔧 Setup and Installation
 
 1. Clone the repository:
@@ -136,19 +106,10 @@ ecommerce-angular/
 
 ## 📱 Application Routes
 
-### User
 - `/` - Homepage
 - `/login` - Login
 - `/register` - Register
 - `/product/:id` - Product details
-- `/cart` - Cart
-- `/checkout` - Checkout
-
-### Admin
-- `/admin` - Admin dashboard
-- `/admin/products` - Product management
-- `/admin/orders` - Order management
-- `/admin/users` - User management
 
 ## 👨‍💻 Author
 
